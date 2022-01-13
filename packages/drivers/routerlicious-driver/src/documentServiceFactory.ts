@@ -141,25 +141,29 @@ export class RouterliciousDocumentServiceFactory implements IDocumentServiceFact
             throw new Error("Parsed url should contain tenant and doc Id!!");
         }
         let [, tenantId] = parsedUrl.pathname.split("/");
-
         const logger2 = ChildLogger.create(logger, "RouterliciousDriver");
-        const rateLimiter = new RateLimiter(this.driverPolicies.maxConcurrentOrdererRequests);
         let documentId = resolvedUrl.id;
-        const ordererRestWrapper = await RouterliciousOrdererRestWrapper.load(
-            tenantId,
-            documentId,
-            this.tokenProvider,
-            logger2,
-            rateLimiter,
-            this.driverPolicies.enableRestLess,
-            resolvedUrl.endpoints.ordererUrl,
-        );
-        // the backend responds with the actual document ID associated with the new container.
-        const documentSession: IDocumentSession = await ordererRestWrapper.get<IDocumentSession>(
-            `/documents/${tenantId}/session/${documentId}`,
-        );
-        const session = documentSession.session;
-        replaceFluidUrl(resolvedUrl, session, parsedUrl);
+        let hasSessionLocationChanged: boolean = false;
+
+        if (resolvedUrl.endpoints.ordererUrl.includes("azurefd.net")) {
+            const rateLimiter = new RateLimiter(this.driverPolicies.maxConcurrentOrdererRequests);
+            const ordererRestWrapper = await RouterliciousOrdererRestWrapper.load(
+                tenantId,
+                documentId,
+                this.tokenProvider,
+                logger2,
+                rateLimiter,
+                this.driverPolicies.enableRestLess,
+                resolvedUrl.endpoints.ordererUrl,
+            );
+            // the backend responds with the actual document ID associated with the new container.
+            const documentSession: IDocumentSession = await ordererRestWrapper.get<IDocumentSession>(
+                `/documents/${tenantId}/session/${documentId}`,
+            );
+            const session = documentSession.session;
+            hasSessionLocationChanged = documentSession.hasSessionLocationChanged;
+            replaceFluidUrl(resolvedUrl, session, parsedUrl);
+        }
 
         const fluidResolvedUrl = resolvedUrl;
         const storageUrl = fluidResolvedUrl.endpoints.storageUrl;
@@ -189,7 +193,7 @@ export class RouterliciousDocumentServiceFactory implements IDocumentServiceFact
             this.driverPolicies,
             this.blobCache,
             this.snapshotTreeCache,
-            documentSession.hasSessionLocationChanged,
+            hasSessionLocationChanged,
             );
     }
 }

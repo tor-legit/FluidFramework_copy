@@ -38,7 +38,7 @@ function getUrlResolver(options: RouteOptions): IUrlResolver {
                 options.tenantId,
                 options.bearerSecret);
         case "r11s":
-            if (options.fluidHost === "https://tianzhu-test-afd-frs.azurefd.net") {
+            if (options.fluidHost.includes("azurefd.net")) {
                 return new InsecureUrlResolver(
                     "",
                     options.fluidHost,
