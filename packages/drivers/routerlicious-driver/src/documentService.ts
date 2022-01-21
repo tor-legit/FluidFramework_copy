@@ -37,6 +37,7 @@ export class DocumentService implements api.IDocumentService {
         private readonly blobCache: ICache<ArrayBufferLike>,
         private readonly snapshotTreeCache: ICache<ISnapshotTree>,
         private readonly hasSessionLocationChanged?: boolean,
+        private readonly isSessionAlive?: boolean,
     ) {
     }
 
@@ -97,6 +98,7 @@ export class DocumentService implements api.IDocumentService {
             this.blobCache,
             this.snapshotTreeCache,
             this.hasSessionLocationChanged,
+            this.isSessionAlive,
             );
         return this.documentStorageService;
     }

@@ -144,6 +144,7 @@ export class RouterliciousDocumentServiceFactory implements IDocumentServiceFact
         const logger2 = ChildLogger.create(logger, "RouterliciousDriver");
         let documentId = resolvedUrl.id;
         let hasSessionLocationChanged: boolean = false;
+        let isSessionAlive: boolean = false;
 
         if (resolvedUrl.endpoints.ordererUrl.includes("azurefd.net")) {
             const rateLimiter = new RateLimiter(this.driverPolicies.maxConcurrentOrdererRequests);
@@ -156,12 +157,13 @@ export class RouterliciousDocumentServiceFactory implements IDocumentServiceFact
                 this.driverPolicies.enableRestLess,
                 resolvedUrl.endpoints.ordererUrl,
             );
-            // the backend responds with the actual document ID associated with the new container.
+            // the backend responds with the actual document session associated with the container.
             const documentSession: IDocumentSession = await ordererRestWrapper.get<IDocumentSession>(
                 `/documents/${tenantId}/session/${documentId}`,
             );
             const session = documentSession.session;
             hasSessionLocationChanged = documentSession.hasSessionLocationChanged;
+            isSessionAlive = documentSession.session.isSessionAlive;
             replaceFluidUrl(resolvedUrl, session, parsedUrl);
         }
 
@@ -194,6 +196,7 @@ export class RouterliciousDocumentServiceFactory implements IDocumentServiceFact
             this.blobCache,
             this.snapshotTreeCache,
             hasSessionLocationChanged,
+            isSessionAlive,
             );
     }
 }

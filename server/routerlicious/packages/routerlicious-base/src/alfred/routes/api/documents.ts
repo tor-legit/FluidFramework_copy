@@ -91,7 +91,7 @@ export function create(
                 {
                     ordererUrl,
                     historianUrl,
-                    isSessionAlive: true,
+                    isSessionAlive: false,
                 },
             };
 
@@ -126,8 +126,9 @@ export function create(
         throttle(throttler, winston, commonThrottleOptions),
         async (request, response, next) => {
             const documentId = getParam(request.params, "id");
+            const tenantId = getParam(request.params, "tenantId");
             const [ordererUrl, historianUrl] = convertUrls(request.headers.host);
-            const documentSessionP = getSession(globalDbMongoManager, documentId, ordererUrl, historianUrl);
+            const documentSessionP = getSession(globalDbMongoManager, documentId, ordererUrl, historianUrl, tenantId);
             handleResponse(documentSessionP, response, undefined, 201);
         });
     return router;
