@@ -30,12 +30,8 @@ export class SummaryReader implements ISummaryReader {
         if (this.enableWholeSummaryUpload) {
             try {
                 const existingRef = await this.summaryStorage.getRef(encodeURIComponent(this.documentId));
-                console.log("0.1");
                 const wholeFlatSummary = await this.summaryStorage.getSummary(existingRef.object.sha);
-                console.log("0.111");
                 const normalizedSummary = convertWholeFlatSummaryToSnapshotTreeAndBlobs(wholeFlatSummary);
-                console.log("1");
-                console.log(JSON.stringify(normalizedSummary));
 
                 // Parse specific fields from the downloaded summary
                 const attributesBlobId = normalizedSummary.snapshotTree.trees[".protocol"].blobs.attributes;
@@ -71,8 +67,7 @@ export class SummaryReader implements ISummaryReader {
                     messages,
                     fromSummary: true,
                 };
-            } catch (error) {
-                console.log(error);
+            } catch {
                 summaryReaderMetric.success(`Returning default summary`);
                 return this.getDefaultSummaryState();
             }

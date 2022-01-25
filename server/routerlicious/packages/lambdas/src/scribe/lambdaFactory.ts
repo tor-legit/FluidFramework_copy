@@ -100,8 +100,6 @@ export class ScribeLambdaFactory extends EventEmitter implements IPartitionLambd
             // Fetch pending ops from scribeDeltas collection
             const dbMessages =
                 await this.messageCollection.find({ documentId, tenantId }, { "operation.sequenceNumber": 1 });
-            context.log?.info(`GetdbMessages`, { dbMessages });
-            context.log?.info(`document.scribe`, document.scribe);
             opMessages = dbMessages.map((message) => message.operation);
         } catch (error) {
             context.log?.error(`Scribe lambda creation failed. Exception: ${inspect(error)}`);
@@ -131,7 +129,6 @@ export class ScribeLambdaFactory extends EventEmitter implements IPartitionLambd
                 // is okay. Conceptually this is similar to default checkpoint where logOffset is -1. In this case,
                 // the sequence number is 'n' rather than '0'.
                 lastCheckpoint.logOffset = -1;
-                context.log?.info(`opMessages`, { opMessages });
                 context.log?.info(JSON.stringify(lastCheckpoint));
             }
         } else {

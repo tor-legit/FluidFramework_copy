@@ -1,7 +1,7 @@
 {
     "logger": {
         "colorize": true,
-        "morganFormat": "dev",
+        "morganFormat": "json",
         "json": false,
         "level": "info",
         "timestamp": true,
@@ -47,7 +47,7 @@
         "endpoint": "zookeeper:2181"
     },
     "storage": {
-        "enableWholeSummaryUpload": true
+        "enableWholeSummaryUpload": false
     },
     "alfred": {
         "kafkaClientId": "alfred",
@@ -115,6 +115,9 @@
         "kafkaClientId": "scribe"
     },
     "system": {
+        "httpServer": {
+            "connectionTimeoutMs": 0
+        },
         "topics": {
             "send": "deltas"
         }
@@ -238,7 +241,7 @@
             "storage": {
                 "historianUrl": "http://localhost:3001",
                 "internalHistorianUrl": "http://historian:3000",
-                "url": "http://summarystorage:80",
+                "url": "http://gitrest:3000",
                 "owner": "fluid",
                 "repository": "fluid"
             }
@@ -264,7 +267,7 @@
             "storage": {
                 "historianUrl": "http://localhost:3001",
                 "internalHistorianUrl": "http://historian:3000",
-                "url": "http://summarystorage:80",
+                "url": "http://gitrest:3000",
                 "owner": "prague",
                 "repository": "local"
             },
