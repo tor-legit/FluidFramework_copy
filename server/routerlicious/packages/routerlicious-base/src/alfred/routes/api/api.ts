@@ -19,6 +19,8 @@ import * as moniker from "moniker";
 import { Provider } from "nconf";
 import requestAPI from "request";
 import winston from "winston";
+import { DefaultAzureCredential } from "@azure/identity";
+import { SecretClient } from "@azure/keyvault-secrets";
 import { Constants, handleResponse } from "../../../utils";
 import {
     craftClientJoinMessage,
@@ -58,8 +60,19 @@ export function create(
         ...commonThrottleOptions,
         throttleIdPrefix: "ping",
     }), async (request, response) => {
-        const host = request.headers.host;
-        response.status(200).send(host);
+        response.sendStatus(200);
+    });
+
+    router.get("/testSummaryStorage", throttle(throttler, winston, {
+        ...commonThrottleOptions,
+        throttleIdPrefix: "testSummaryStorage",
+    }), async (request, response) => {
+        const credential = new DefaultAzureCredential();
+        // eslint-disable-next-line max-len
+        const url = `https://frsdev6-pipeline-secrets.vault.azure.net/secrets/test-dev6-for-summary-storage/98a2fe1c268a46cb8f14ba45899a36c0`;
+        const client = new SecretClient(url, credential);
+        await client.setSecret("test-dev6-for-summary-storage", "654321");
+        response.sendStatus(200);
     });
 
     router.patch(
