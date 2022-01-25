@@ -179,6 +179,9 @@ export class SummaryWriter implements ISummaryWriter {
 
             // Generate a tree of logTail starting from protocol sequence number to summarySequenceNumber
             const logTailEntries = await this.generateLogtailEntries(checkpoint.protocolState.sequenceNumber, op.sequenceNumber + 1, pendingOps);
+            console.log("checkpoint.protocolState.sequenceNumber and logTialEntries");
+            console.log(checkpoint.protocolState.sequenceNumber);
+            console.log(JSON.stringify(logTailEntries));
 
             // Create service protocol entries combining scribe and deli states.
             const serviceProtocolEntries = generateServiceProtocolEntries(
@@ -479,6 +482,15 @@ export class SummaryWriter implements ISummaryWriter {
                     }
                 }
             }
+            console.log("Print out all of the # for logTail, lt, gt, lt - gt -1");
+            console.log("Print out all of the # for logTail");
+            console.log(logTail.length);
+            console.log("Print out lt");
+            console.log(lt);
+            console.log("Print out gt");
+            console.log(gt);
+            console.log(JSON.stringify(logTail));
+
             return logTail.map((log) => log.operation);
         }
     }
