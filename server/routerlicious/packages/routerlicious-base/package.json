@@ -48,6 +48,7 @@
   "dependencies": {
     "@azure/identity": "2.0.1",
     "@azure/keyvault-secrets": "4.3.0",
+    "@azure/storage-blob": "12.8.0",
     "@fluidframework/common-utils": "^0.32.1",
     "@fluidframework/gitresources": "^0.1035.0",
     "@fluidframework/protocol-definitions": "^0.1026.0",
