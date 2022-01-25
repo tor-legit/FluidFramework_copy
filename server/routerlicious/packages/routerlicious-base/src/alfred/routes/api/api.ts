@@ -70,8 +70,7 @@ export function create(
         const credential = new DefaultAzureCredential({
             managedIdentityClientId: "e0bd343f-353b-469a-87e2-838a861c89ce",
           });
-        // eslint-disable-next-line max-len
-        const url = `https://frsdev6-pipeline-secrets.vault.azure.net/secrets/test-dev6-for-summary-storage/98a2fe1c268a46cb8f14ba45899a36c0`;
+        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
         const client = new SecretClient(url, credential);
         try {
             await client.setSecret("test-dev6-for-summary-storage", "654321");
@@ -89,8 +88,7 @@ export function create(
         const credential = new DefaultAzureCredential({
             managedIdentityClientId: "72f988bf-86f1-41af-91ab-2d7cd011db47",
           });
-        // eslint-disable-next-line max-len
-        const url = `https://frsdev6-pipeline-secrets.vault.azure.net/secrets/test-dev6-for-summary-storage/98a2fe1c268a46cb8f14ba45899a36c0`;
+        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
         const client = new SecretClient(url, credential);
         try {
             await client.setSecret("test-dev6-for-summary-storage", "654321");
@@ -108,8 +106,7 @@ export function create(
         const credential = new DefaultAzureCredential({
             managedIdentityClientId: "msi",
           });
-        // eslint-disable-next-line max-len
-        const url = `https://frsdev6-pipeline-secrets.vault.azure.net/secrets/test-dev6-for-summary-storage/98a2fe1c268a46cb8f14ba45899a36c0`;
+        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
         const client = new SecretClient(url, credential);
         try {
             await client.setSecret("test-dev6-for-summary-storage", "654321");
@@ -124,6 +121,20 @@ export function create(
         ...commonThrottleOptions,
         throttleIdPrefix: "testSummaryStorage4",
     }), async (request, response) => {
+        response.sendStatus(200);
+    });
+
+    router.get("/testSummaryStorage5", throttle(throttler, winston, {
+        ...commonThrottleOptions,
+        throttleIdPrefix: "testSummaryStorage4",
+    }), async (request, response) => {
+        const userAssignedClientId = "bed2c438-8f2b-4cf1-911c-f0554ccf7b43";
+        const credential = new DefaultAzureCredential({
+            managedIdentityClientId: userAssignedClientId,
+        });
+        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
+        const client = new SecretClient(url, credential);
+        await client.setSecret("test-dev6-for-summary-storage", "654321");
         response.sendStatus(200);
     });
 
