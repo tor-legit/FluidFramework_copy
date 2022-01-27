@@ -19,9 +19,6 @@ import * as moniker from "moniker";
 import { Provider } from "nconf";
 import requestAPI from "request";
 import winston from "winston";
-import { DefaultAzureCredential } from "@azure/identity";
-import { SecretClient } from "@azure/keyvault-secrets";
-import { BlobServiceClient } from "@azure/storage-blob";
 import { Constants, handleResponse } from "../../../utils";
 import {
     craftClientJoinMessage,
@@ -62,127 +59,6 @@ export function create(
         throttleIdPrefix: "ping",
     }), async (request, response) => {
         response.sendStatus(200);
-    });
-
-    router.get("/testSummaryStorage1", throttle(throttler, winston, {
-        ...commonThrottleOptions,
-        throttleIdPrefix: "testSummaryStorage1",
-    }), async (request, response) => {
-        const credential = new DefaultAzureCredential({
-            managedIdentityClientId: "e0bd343f-353b-469a-87e2-838a861c89ce",
-          });
-        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
-        const client = new SecretClient(url, credential);
-        try {
-            await client.setSecret("test-dev6-for-summary-storage", "654321");
-        }
-        catch(error) {
-            console.log(error);
-        }
-        response.sendStatus(200);
-    });
-
-    router.get("/testSummaryStorage2", throttle(throttler, winston, {
-        ...commonThrottleOptions,
-        throttleIdPrefix: "testSummaryStorage2",
-    }), async (request, response) => {
-        const credential = new DefaultAzureCredential({
-            managedIdentityClientId: "72f988bf-86f1-41af-91ab-2d7cd011db47",
-          });
-        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
-        const client = new SecretClient(url, credential);
-        try {
-            await client.setSecret("test-dev6-for-summary-storage", "654321");
-        }
-        catch(error) {
-            console.log(error);
-        }
-        response.sendStatus(200);
-    });
-
-    router.get("/testSummaryStorage3", throttle(throttler, winston, {
-        ...commonThrottleOptions,
-        throttleIdPrefix: "testSummaryStorage3",
-    }), async (request, response) => {
-        const credential = new DefaultAzureCredential({
-            managedIdentityClientId: "msi",
-          });
-        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
-        const client = new SecretClient(url, credential);
-        try {
-            await client.setSecret("test-dev6-for-summary-storage", "654321");
-        }
-        catch(error) {
-            console.log(error);
-        }
-        response.sendStatus(200);
-    });
-
-    router.get("/testSummaryStorage4", throttle(throttler, winston, {
-        ...commonThrottleOptions,
-        throttleIdPrefix: "testSummaryStorage4",
-    }), async (request, response) => {
-        const host = request.headers.host;
-        response.status(200).send(host);
-    });
-
-    router.get("/testSummaryStorage5", throttle(throttler, winston, {
-        ...commonThrottleOptions,
-        throttleIdPrefix: "testSummaryStorage5",
-    }), async (request, response) => {
-        const userAssignedClientId = "bed2c438-8f2b-4cf1-911c-f0554ccf7b43";
-        const credential = new DefaultAzureCredential({
-            managedIdentityClientId: userAssignedClientId,
-        });
-        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
-        const client = new SecretClient(url, credential);
-        await client.setSecret("test-dev6-for-summary-storage", "654321");
-
-        const blobServiceClient1 = new BlobServiceClient(
-            `https://tianzhuteststorageneu001.blob.core.windows.net`,
-            credential,
-        );
-        const containerName1 = `newcontainer${new Date().getTime()}`;
-        const containerClient1 = blobServiceClient1.getContainerClient(containerName1);
-        const createContainerResponse = await containerClient1.create();
-
-        const blobServiceClient2 = new BlobServiceClient(
-            `https://tianzhuteststorageneu002.blob.core.windows.net`,
-            credential,
-        );
-        const containerName2 = `newcontainer${new Date().getTime()}`;
-        const containerClient2 = blobServiceClient2.getContainerClient(containerName2);
-        await containerClient2.create();
-
-        response.sendStatus(200).send(JSON.stringify(createContainerResponse));
-    });
-
-    router.get("/testSummaryStorage6", throttle(throttler, winston, {
-        ...commonThrottleOptions,
-        throttleIdPrefix: "testSummaryStorage6",
-    }), async (request, response) => {
-        const credential = new DefaultAzureCredential();
-        const url = `https://frsdev6-pipeline-secrets.vault.azure.net`;
-        const client = new SecretClient(url, credential);
-        await client.setSecret("test-dev6-for-summary-storage", "654321");
-
-        const blobServiceClient1 = new BlobServiceClient(
-            `https://tianzhuteststorageneu001.blob.core.windows.net`,
-            credential,
-        );
-        const containerName1 = `newcontainer${new Date().getTime()}`;
-        const containerClient1 = blobServiceClient1.getContainerClient(containerName1);
-        const createContainerResponse = await containerClient1.create();
-
-        const blobServiceClient2 = new BlobServiceClient(
-            `https://tianzhuteststorageneu002.blob.core.windows.net`,
-            credential,
-        );
-        const containerName2 = `newcontainer${new Date().getTime()}`;
-        const containerClient2 = blobServiceClient2.getContainerClient(containerName2);
-        await containerClient2.create();
-
-        response.sendStatus(200).send(JSON.stringify(createContainerResponse));
     });
 
     router.patch(
