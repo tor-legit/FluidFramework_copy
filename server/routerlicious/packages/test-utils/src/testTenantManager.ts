@@ -19,6 +19,7 @@ export class TestTenant implements ITenant {
     private readonly owner = "test";
     private readonly repository = "test";
     private readonly manager: GitManager;
+    private readonly summaryStorageUrl = "test";
 
     constructor(private readonly url: string, private readonly historianUrl: string, db: IDb) {
         const testHistorian = new TestHistorian(db);
@@ -37,6 +38,7 @@ export class TestTenant implements ITenant {
             owner: this.owner,
             repository: this.repository,
             url: this.url,
+            summaryStorageUrl: this.summaryStorageUrl,
         };
     }
 

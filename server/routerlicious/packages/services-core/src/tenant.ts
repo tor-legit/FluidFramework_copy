@@ -43,6 +43,9 @@ export interface ITenantStorage {
         // Password for the storage provider
         password: string;
     };
+
+    // Summary storage url of the tenant
+    summaryStorageUrl: string
 }
 
 export interface ITenantOrderer {
