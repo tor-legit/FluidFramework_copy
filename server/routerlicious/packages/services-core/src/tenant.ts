@@ -45,7 +45,7 @@ export interface ITenantStorage {
     };
 
     // Summary storage url of the tenant
-    summaryStorageUrl: string
+    summaryStorageName?: string
 }
 
 export interface ITenantOrderer {
