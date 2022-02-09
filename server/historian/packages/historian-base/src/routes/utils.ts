@@ -56,13 +56,15 @@ export async function createGitService(
     const customData: ITenantCustomDataExternal = details.customData;
     const writeToExternalStorage = !!customData.externalStorageData;
     const decoded = jwt.decode(token) as ITokenClaims;
-     const service = new RestGitService(
-         details.storage,
-         writeToExternalStorage,
-         tenantId,
-         decoded.documentId,
-         cache,
-         asyncLocalStorage);
+    const summaryStorageName = "tianzhuteststorageneu001";
+    const service = new RestGitService(
+        details.storage,
+        writeToExternalStorage,
+        tenantId,
+        decoded.documentId,
+        cache,
+        asyncLocalStorage,
+        summaryStorageName);
 
     return service;
 }

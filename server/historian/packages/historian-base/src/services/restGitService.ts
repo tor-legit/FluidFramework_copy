@@ -57,10 +57,12 @@ export class RestGitService {
         private readonly tenantId: string,
         private readonly documentId: string,
         private readonly cache?: ICache,
-        private readonly asyncLocalStorage?: AsyncLocalStorage<string>) {
+        private readonly asyncLocalStorage?: AsyncLocalStorage<string>,
+        private readonly summaryStorageName?: string) {
         const defaultHeaders: OutgoingHttpHeaders = {
             "User-Agent": userAgent,
             "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
+            "Summary-Storage-Name": this.summaryStorageName,
         };
         if (storage.credentials) {
             const token = Buffer.from(`${storage.credentials.user}:${storage.credentials.password}`);
