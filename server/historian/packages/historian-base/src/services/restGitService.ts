@@ -77,12 +77,14 @@ export class RestGitService {
             `Created RestGitService: ${JSON.stringify({
                 "BaseUrl": storage.url,
                 "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
+                "Summary-Storage-Name": this.summaryStorageName,
             })}`,
         );
         Lumberjack.info(
             `Created RestGitService: ${JSON.stringify({
                 "BaseUrl": storage.url,
                 "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
+                "Summary-Storage-Name": this.summaryStorageName,
             })}`,
             this.lumberProperties,
         );
