@@ -56,7 +56,7 @@ export async function createGitService(
     const customData: ITenantCustomDataExternal = details.customData;
     const writeToExternalStorage = !!customData.externalStorageData;
     const decoded = jwt.decode(token) as ITokenClaims;
-    const summaryStorageName = "tianzhuteststorageneu002";
+    const summaryStorageName = customData.summaryStorageName;
     const service = new RestGitService(
         details.storage,
         writeToExternalStorage,
