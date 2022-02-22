@@ -62,7 +62,7 @@ export class RestGitService {
         const defaultHeaders: OutgoingHttpHeaders = {
             "User-Agent": userAgent,
             "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
-            "Summary-Storage-Name": this.summaryStorageName,
+            "Summary-Storage-Name": this.summaryStorageName !== undefined ? this.summaryStorageName : null,
         };
         if (storage.credentials) {
             const token = Buffer.from(`${storage.credentials.user}:${storage.credentials.password}`);
@@ -77,14 +77,14 @@ export class RestGitService {
             `Created RestGitService: ${JSON.stringify({
                 "BaseUrl": storage.url,
                 "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
-                "Summary-Storage-Name": this.summaryStorageName,
+                "Summary-Storage-Name": this.summaryStorageName !== undefined ? this.summaryStorageName : null,
             })}`,
         );
         Lumberjack.info(
             `Created RestGitService: ${JSON.stringify({
                 "BaseUrl": storage.url,
                 "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
-                "Summary-Storage-Name": this.summaryStorageName,
+                "Summary-Storage-Name": this.summaryStorageName !== undefined ? this.summaryStorageName : null,
             })}`,
             this.lumberProperties,
         );
