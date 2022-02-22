@@ -62,6 +62,7 @@ export class RestGitService {
         const defaultHeaders: OutgoingHttpHeaders = {
             "User-Agent": userAgent,
             "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
+            // eslint-disable-next-line no-null/no-null
             "Summary-Storage-Name": this.summaryStorageName !== undefined ? this.summaryStorageName : null,
         };
         if (storage.credentials) {
@@ -77,6 +78,7 @@ export class RestGitService {
             `Created RestGitService: ${JSON.stringify({
                 "BaseUrl": storage.url,
                 "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
+                // eslint-disable-next-line no-null/no-null
                 "Summary-Storage-Name": this.summaryStorageName !== undefined ? this.summaryStorageName : null,
             })}`,
         );
@@ -84,6 +86,7 @@ export class RestGitService {
             `Created RestGitService: ${JSON.stringify({
                 "BaseUrl": storage.url,
                 "Storage-Routing-Id": this.getStorageRoutingHeaderValue(),
+                // eslint-disable-next-line no-null/no-null
                 "Summary-Storage-Name": this.summaryStorageName !== undefined ? this.summaryStorageName : null,
             })}`,
             this.lumberProperties,
